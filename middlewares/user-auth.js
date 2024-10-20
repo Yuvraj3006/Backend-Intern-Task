@@ -3,7 +3,7 @@ require("dotenv").config();
 
 //generating usertoken
 const generateToken = ({ username ,useremail}) => {
-    return jwt.sign({ useremail }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "12h" });
+    return jwt.sign({ username,useremail }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "12h" });
 }
 
 // authencatuon user token

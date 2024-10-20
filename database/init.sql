@@ -19,7 +19,7 @@ CREATE TABLE expense (
     expense_description TEXT DEFAULT NULL,
     issplit BOOL,
     splittype TEXT,
-    expense_uuid UUID DEFAULT uuid_generate_v4()
+    expense_uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY
 );
 
 
@@ -28,10 +28,10 @@ CREATE TABLE split_details (
     serialNum SERIAL PRIMARY KEY,
     totalamount DECIMAL(10, 2),
     split_type TEXT,
-    split_ways INT,  -- Define data type for split_ways
-    split_amount DECIMAL(10, 2)[],  -- Array of split amounts
-    split_among TEXT[],  -- Array of user identifiers (could be user emails)
-    expense_uuid UUID REFERENCES expense(expense_uuid)  -- Foreign key referencing expense table
+    split_ways INT, 
+    split_amount DECIMAL(10, 2)[],  
+    split_among TEXT[],  
+    expense_uuid UUID REFERENCES expense(expense_uuid)  
 );
 
 ALTER TABLE expense ADD COLUMN transaction_type VARCHAR(10) CHECK (transaction_type IN ('credit', 'debit'));

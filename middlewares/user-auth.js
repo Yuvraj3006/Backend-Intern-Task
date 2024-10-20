@@ -18,7 +18,7 @@ const authenticateToken = (req, res, next) => {
         if (err) {
             return res.status(403).json({ error: "Invalid token" }); // Handle token expiration/invalidity
         }
-        console.log(decoded); // You should see the decoded payload here (should include useremail)
+        //console.log(decoded); // You should see the decoded payload here (should include useremail)
         req.user = decoded; // Attach decoded token data (e.g., useremail) to request
         next(); // Proceed to the next middleware or route handler
     });

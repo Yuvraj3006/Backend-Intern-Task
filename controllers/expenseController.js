@@ -3,18 +3,26 @@ const { v4: uuidv4 } = require('uuid');
 const { exact_split, equal_split, percentage_split } = require('../utils/split');
 
 async function handleAddExpense(req, res) {
-    const { expense_amount, expense_date, expense_description, issplit, splittype, split_users } = req.body;
+    const { expense_amount, expense_date, expense_description, issplit, splittype, split_users,transaction_type,credited_from} = req.body;
     const { username, useremail } = req.user;
 
     try {
         // Validate input fields
-        if (!expense_amount || !expense_date || typeof issplit !== 'boolean') {
+        if (!expense_amount || !expense_date || typeof issplit !== 'boolean' || !transaction_type) {
             return res.status(400).send({ error: "Check the input fields properly" });
         }
 
         // Validate expense amount
         if (expense_amount <= 0) {
             return res.status(400).send({ error: "Expense amount must be greater than zero" });
+        }
+        
+        //validating the transaction type
+        if (transaction_type === 'credit' && !credited_from) {
+            return res.status(400).send({ error: "For credit transactions, 'credited_from' must be provided" });
+        }
+        if (transaction_type !== 'credit' && transaction_type !== 'debit') {
+            return res.status(400).send({ error: "Transaction type must be 'credit' or 'debit'" });
         }
 
         // Create UUID for the new expense
@@ -23,10 +31,10 @@ async function handleAddExpense(req, res) {
         // Insert the expense into the `expense` table
         const insertExpenseQuery = `
             INSERT INTO expense 
-            (username, useremail, expense_date, expense_amount, expense_description, issplit, splittype, expense_uuid) 
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+            (username, useremail, expense_date, expense_amount, expense_description, issplit, splittype, expense_uuid,transaction_type,credited_from) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8,$9,$10)
         `;
-        const insertExpenseValues = [username, useremail, expense_date, expense_amount, expense_description, issplit, splittype, expense_uuid];
+        const insertExpenseValues = [username, useremail, expense_date, expense_amount, expense_description, issplit, splittype, expense_uuid,transaction_type,credited_from];
         await db.query(insertExpenseQuery, insertExpenseValues);
 
         // If the expense is split, handle the splitting logic
@@ -112,13 +120,10 @@ async function handleGetExpenses(req,res) {
     }
 }
 
-async function handleBalanceSheet(params) {
-    
-}
+
 
 module.exports = {
     handleAddExpense,
     handleGetIndividualExpense,
     handleGetExpenses,
-    handleBalanceSheet
 }

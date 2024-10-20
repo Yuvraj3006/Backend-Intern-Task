@@ -63,7 +63,7 @@ async function handleUserLogin(req,res) {
         const FetchDetailsQuery = `SELECT username,userpass FROM users where useremail = $1`;
         const QueryResult = await db.query(FetchDetailsQuery,[userEmail]);
         
-        const userDetails = QueryResult.rows[0].userpass;
+        const userDetails = QueryResult.rows[0];
         const userExists = bcrypt.compare(userPass,userDetails.userpass);
         if(userExists){
             return res.status(200).json(generateToken({username :userDetails.username,useremail : userEmail}));

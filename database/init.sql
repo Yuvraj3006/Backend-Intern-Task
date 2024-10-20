@@ -33,3 +33,7 @@ CREATE TABLE split_details (
     split_among TEXT[],  -- Array of user identifiers (could be user emails)
     expense_uuid UUID REFERENCES expense(expense_uuid)  -- Foreign key referencing expense table
 );
+
+ALTER TABLE expense ADD COLUMN transaction_type VARCHAR(10) CHECK (transaction_type IN ('credit', 'debit'));
+
+ALTER TABLE expense ADD COLUMN credited_from VARCHAR(255);

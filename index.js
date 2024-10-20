@@ -1,6 +1,6 @@
 const express = require("express")
-
-const port = 8000;
+const db = require("./database/database")
+const port = 3001;
 const app = express();
 
 app.use(express.json()); 
@@ -9,6 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 const UserRoute = require("./routes/userRoutes");
 const ExpenseRoute = require("./routes/expenseRoutes")
 
+db.connect();
 
 app.use("/user",UserRoute);
 app.use("/expense", ExpenseRoute);

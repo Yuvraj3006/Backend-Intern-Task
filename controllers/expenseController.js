@@ -97,8 +97,7 @@ async function handleGetExpenses(req,res) {
         const fetchExpensesQuery = `SELECT DISTINCT e.*, s.*
                                     FROM expense e
                                     JOIN split_details s ON e.expense_uuid = s.expense_uuid
-                                    WHERE e.useremail = $1;
-                                    `;
+                                    WHERE e.useremail = $1;`;
         const result = await db.query(fetchExpensesQuery,[useremail]);
 
         const expenseDetails = result.rows;

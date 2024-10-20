@@ -3,14 +3,14 @@ require('dotenv').config();
 
 
 const db =  new pg.Client({
-    user: 'neondb_owner',
-    host: 'ep-wild-dawn-a7hpx5l6.ap-southeast-2.aws.neon.tech',
-    database:'neondb',
-    password:'SzH6Zqfrm1bI',
-    port:5432,
-    ssl: {
-        rejectUnauthorized: false,
-    },
+    user: process.env.DATABASE_USER,
+    host: process.env.DATABASE_HOST,
+    database:process.env.DATABASE_NAME,
+    password:process.env.DATABASE_PASSWORD,
+    port:process.env.DATABASE_PORT||5432,
+    ssl:{
+        rejectUnauthorized:false
+    }
 });
 
 

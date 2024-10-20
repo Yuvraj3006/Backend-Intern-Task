@@ -9,7 +9,12 @@ app.use(express.urlencoded({ extended: true }));
 const UserRoute = require("./routes/userRoutes");
 const ExpenseRoute = require("./routes/expenseRoutes")
 
-db.connect();
+if(db.connect()){
+    console.log("database connected successfully !!")
+}
+else{
+    console.log("error in database connection !")
+}
 
 app.use("/user",UserRoute);
 app.use("/expense", ExpenseRoute);

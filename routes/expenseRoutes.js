@@ -11,7 +11,7 @@ router.get("/individual-expense",authenticateToken,handleGetIndividualExpense);
 
 router.get("/all-expense",authenticateToken,handleGetExpenses);
 
-router.get("/balance-sheet",generateUserBalanceSheet);
+router.get("/balance-sheet",authenticateToken,generateUserBalanceSheet);
 
 
 

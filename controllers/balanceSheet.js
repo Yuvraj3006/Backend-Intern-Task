@@ -5,9 +5,11 @@ const path = require('path');
 const fs = require('fs');
 
 async function generateUserBalanceSheet(req, res) {
+  //console.log("Generating balance sheet");
     try {
       // Get the authenticated user's email from the token
       const { useremail } = req.user;
+      //console.log(useremail);
   
       // Query to get data for the specific user from the 'expense' and 'split_details' tables including new attributes
       const expenseQuery = `
@@ -80,6 +82,7 @@ async function generateUserBalanceSheet(req, res) {
   
         // Optionally, delete the file after download (if temporary)
         fs.unlinkSync(filePath);
+        return res.json({message : "Balance-sheet generated successfully"});
       });
     } catch (error) {
       console.error('Error generating balance sheet:', error);
